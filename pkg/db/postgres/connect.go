@@ -1,9 +1,9 @@
 package postgres
 
 import (
-	"Diploma/config"
 	"database/sql"
 	"fmt"
+	"github.com/engineerXIII/Diploma-server/config"
 	"time"
 )
 

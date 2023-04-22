@@ -1,4 +1,4 @@
-module Diploma
+module github.com/engineerXIII/Diploma-server
 
 go 1.20
 

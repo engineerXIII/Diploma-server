@@ -1,7 +1,7 @@
 package logger
 
 import (
-	"Diploma/config"
+	"github.com/engineerXIII/Diploma-server/config"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 	"os"
