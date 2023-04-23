@@ -39,7 +39,7 @@ func TestAuthHandlers_Register(t *testing.T) {
 		},
 	}
 
-	apiLogger := logger.NewApiLogger(cfg)
+	apiLogger := logger.NewServerLogger(cfg)
 	authHandlers := NewAuthHandlers(cfg, mockAuthUC, mockSessUC, apiLogger)
 
 	gender := "male"
@@ -105,7 +105,7 @@ func TestAuthHandlers_Login(t *testing.T) {
 		},
 	}
 
-	apiLogger := logger.NewApiLogger(cfg)
+	apiLogger := logger.NewServerLogger(cfg)
 	authHandlers := NewAuthHandlers(cfg, mockAuthUC, mockSessUC, apiLogger)
 
 	type Login struct {
@@ -177,7 +177,7 @@ func TestAuthHandlers_Logout(t *testing.T) {
 		},
 	}
 
-	apiLogger := logger.NewApiLogger(cfg)
+	apiLogger := logger.NewServerLogger(cfg)
 	authHandlers := NewAuthHandlers(cfg, mockAuthUC, mockSessUC, apiLogger)
 	sessionKey := "session-id"
 	cookieValue := "cookieValue"

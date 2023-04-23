@@ -22,7 +22,6 @@ type User struct {
 	Address     *string    `json:"address,omitempty" db:"address" redis:"address" validate:"omitempty,lte=250"`
 	City        *string    `json:"city,omitempty" db:"city" redis:"city" validate:"omitempty,lte=24"`
 	Country     *string    `json:"country,omitempty" db:"country" redis:"country" validate:"omitempty,lte=24"`
-	Gender      *string    `json:"gender,omitempty" db:"gender" redis:"gender" validate:"omitempty,lte=10"`
 	Postcode    *int       `json:"postcode,omitempty" db:"postcode" redis:"postcode" validate:"omitempty"`
 	Birthday    *time.Time `json:"birthday,omitempty" db:"birthday" redis:"birthday" validate:"omitempty,lte=10"`
 	CreatedAt   time.Time  `json:"created_at,omitempty" db:"created_at" redis:"created_at"`

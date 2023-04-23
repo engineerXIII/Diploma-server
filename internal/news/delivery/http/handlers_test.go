@@ -26,7 +26,7 @@ func TestNewsHandlers_Create(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
-	apiLogger := logger.NewApiLogger(nil)
+	apiLogger := logger.NewServerLogger(nil)
 	mockNewsUC := mock.NewMockUseCase(ctrl)
 	newsHandlers := NewNewsHandlers(nil, mockNewsUC, apiLogger)
 
@@ -77,7 +77,7 @@ func TestNewsHandlers_Update(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
-	apiLogger := logger.NewApiLogger(nil)
+	apiLogger := logger.NewServerLogger(nil)
 	mockNewsUC := mock.NewMockUseCase(ctrl)
 	newsHandlers := NewNewsHandlers(nil, mockNewsUC, apiLogger)
 
@@ -130,7 +130,7 @@ func TestNewsHandlers_GetByID(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
-	apiLogger := logger.NewApiLogger(nil)
+	apiLogger := logger.NewServerLogger(nil)
 	mockNewsUC := mock.NewMockUseCase(ctrl)
 	newsHandlers := NewNewsHandlers(nil, mockNewsUC, apiLogger)
 

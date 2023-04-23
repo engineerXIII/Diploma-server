@@ -8,7 +8,6 @@ import (
 
 	"github.com/golang/mock/gomock"
 	"github.com/google/uuid"
-	"github.com/minio/minio-go/v7"
 	"github.com/opentracing/opentracing-go"
 	"github.com/stretchr/testify/require"
 	"golang.org/x/crypto/bcrypt"
@@ -38,7 +37,7 @@ func TestAuthUC_Register(t *testing.T) {
 		},
 	}
 
-	apiLogger := logger.NewApiLogger(cfg)
+	apiLogger := logger.NewServerLogger(cfg)
 	mockAuthRepo := mock.NewMockRepository(ctrl)
 	authUC := NewAuthUseCase(cfg, mockAuthRepo, nil, apiLogger)
 
@@ -78,7 +77,7 @@ func TestAuthUC_Update(t *testing.T) {
 		},
 	}
 
-	apiLogger := logger.NewApiLogger(cfg)
+	apiLogger := logger.NewServerLogger(cfg)
 
 	mockAuthRepo := mock.NewMockRepository(ctrl)
 	mockRedisRepo := mock.NewMockRedisRepository(ctrl)
@@ -121,7 +120,7 @@ func TestAuthUC_Delete(t *testing.T) {
 		},
 	}
 
-	apiLogger := logger.NewApiLogger(cfg)
+	apiLogger := logger.NewServerLogger(cfg)
 
 	mockAuthRepo := mock.NewMockRepository(ctrl)
 	mockRedisRepo := mock.NewMockRedisRepository(ctrl)
@@ -163,7 +162,7 @@ func TestAuthUC_GetByID(t *testing.T) {
 		},
 	}
 
-	apiLogger := logger.NewApiLogger(cfg)
+	apiLogger := logger.NewServerLogger(cfg)
 	mockAuthRepo := mock.NewMockRepository(ctrl)
 	mockRedisRepo := mock.NewMockRedisRepository(ctrl)
 	authUC := NewAuthUseCase(cfg, mockAuthRepo, mockRedisRepo, apiLogger)
@@ -206,7 +205,7 @@ func TestAuthUC_FindByName(t *testing.T) {
 		},
 	}
 
-	apiLogger := logger.NewApiLogger(cfg)
+	apiLogger := logger.NewServerLogger(cfg)
 	mockAuthRepo := mock.NewMockRepository(ctrl)
 	mockRedisRepo := mock.NewMockRedisRepository(ctrl)
 	authUC := NewAuthUseCase(cfg, mockAuthRepo, mockRedisRepo, apiLogger)
@@ -249,7 +248,7 @@ func TestAuthUC_GetUsers(t *testing.T) {
 		},
 	}
 
-	apiLogger := logger.NewApiLogger(cfg)
+	apiLogger := logger.NewServerLogger(cfg)
 	mockAuthRepo := mock.NewMockRepository(ctrl)
 	mockRedisRepo := mock.NewMockRedisRepository(ctrl)
 	authUC := NewAuthUseCase(cfg, mockAuthRepo, mockRedisRepo, apiLogger)
@@ -291,7 +290,7 @@ func TestAuthUC_Login(t *testing.T) {
 		},
 	}
 
-	apiLogger := logger.NewApiLogger(cfg)
+	apiLogger := logger.NewServerLogger(cfg)
 	mockAuthRepo := mock.NewMockRepository(ctrl)
 	mockRedisRepo := mock.NewMockRedisRepository(ctrl)
 	authUC := NewAuthUseCase(cfg, mockAuthRepo, mockRedisRepo, apiLogger)
@@ -339,10 +338,9 @@ func TestAuthUC_UploadAvatar(t *testing.T) {
 		},
 	}
 
-	apiLogger := logger.NewApiLogger(cfg)
+	apiLogger := logger.NewServerLogger(cfg)
 	mockAuthRepo := mock.NewMockRepository(ctrl)
 	mockRedisRepo := mock.NewMockRedisRepository(ctrl)
-	mockAWSRepo := mock.NewMockAWSRepository(ctrl)
 	authUC := NewAuthUseCase(cfg, mockAuthRepo, mockRedisRepo, apiLogger)
 
 	ctx := context.Background()
@@ -350,7 +348,6 @@ func TestAuthUC_UploadAvatar(t *testing.T) {
 	defer span.Finish()
 
 	file := models.UploadInput{}
-	uploadInfo := &minio.UploadInfo{}
 	userUID := uuid.New()
 
 	user := &models.User{
@@ -359,7 +356,6 @@ func TestAuthUC_UploadAvatar(t *testing.T) {
 		Email:    "email@gmail.com",
 	}
 
-	mockAWSRepo.EXPECT().PutObject(ctxWithTrace, gomock.Eq(file)).Return(uploadInfo, nil)
 	mockAuthRepo.EXPECT().Update(ctxWithTrace, gomock.Any()).Return(user, nil)
 
 	updatedUser, err := authUC.UploadAvatar(ctx, userUID, file)

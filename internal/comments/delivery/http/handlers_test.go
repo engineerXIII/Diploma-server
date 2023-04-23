@@ -27,7 +27,7 @@ func TestCommentsHandlers_Create(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
-	apiLogger := logger.NewApiLogger(nil)
+	apiLogger := logger.NewServerLogger(nil)
 	mockCommUC := mock.NewMockUseCase(ctrl)
 	commUC := usecase.NewCommentsUseCase(nil, mockCommUC, apiLogger)
 
@@ -80,7 +80,7 @@ func TestCommentsHandlers_GetByID(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
-	apiLogger := logger.NewApiLogger(nil)
+	apiLogger := logger.NewServerLogger(nil)
 	mockCommUC := mock.NewMockUseCase(ctrl)
 	commUC := usecase.NewCommentsUseCase(nil, mockCommUC, apiLogger)
 
@@ -108,7 +108,7 @@ func TestCommentsHandlers_Delete(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
-	apiLogger := logger.NewApiLogger(nil)
+	apiLogger := logger.NewServerLogger(nil)
 	mockCommUC := mock.NewMockUseCase(ctrl)
 	commUC := usecase.NewCommentsUseCase(nil, mockCommUC, apiLogger)
 

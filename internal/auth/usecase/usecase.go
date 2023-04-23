@@ -209,5 +209,5 @@ func (u *authUC) GenerateUserKey(userID string) string {
 }
 
 func (u *authUC) generateAWSMinioURL(bucket string, key string) string {
-	return fmt.Sprintf("%s/minio/%s/%s", u.cfg.AWS.MinioEndpoint, bucket, key)
+	return fmt.Sprintf("%s/minio/%s/%s", "localhost", bucket, key)
 }

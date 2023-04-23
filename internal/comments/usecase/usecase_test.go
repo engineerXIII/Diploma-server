@@ -21,7 +21,7 @@ func TestCommentsUC_Create(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
-	apiLogger := logger.NewApiLogger(nil)
+	apiLogger := logger.NewServerLogger(nil)
 	mockCommRepo := mock.NewMockRepository(ctrl)
 	commUC := NewCommentsUseCase(nil, mockCommRepo, apiLogger)
 
@@ -43,7 +43,7 @@ func TestCommentsUC_Update(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
-	apiLogger := logger.NewApiLogger(nil)
+	apiLogger := logger.NewServerLogger(nil)
 	mockCommRepo := mock.NewMockRepository(ctrl)
 	commUC := NewCommentsUseCase(nil, mockCommRepo, apiLogger)
 
@@ -80,7 +80,7 @@ func TestCommentsUC_Delete(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
-	apiLogger := logger.NewApiLogger(nil)
+	apiLogger := logger.NewServerLogger(nil)
 	mockCommRepo := mock.NewMockRepository(ctrl)
 	commUC := NewCommentsUseCase(nil, mockCommRepo, apiLogger)
 
@@ -117,7 +117,7 @@ func TestCommentsUC_GetByID(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
-	apiLogger := logger.NewApiLogger(nil)
+	apiLogger := logger.NewServerLogger(nil)
 	mockCommRepo := mock.NewMockRepository(ctrl)
 	commUC := NewCommentsUseCase(nil, mockCommRepo, apiLogger)
 
@@ -145,7 +145,7 @@ func TestCommentsUC_GetAllByNewsID(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
-	apiLogger := logger.NewApiLogger(nil)
+	apiLogger := logger.NewServerLogger(nil)
 	mockCommRepo := mock.NewMockRepository(ctrl)
 	commUC := NewCommentsUseCase(nil, mockCommRepo, apiLogger)
 
