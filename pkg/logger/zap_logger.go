@@ -1,10 +1,12 @@
 package logger
 
 import (
-	"github.com/engineerXIII/Diploma-server/config"
+	"os"
+
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
-	"os"
+
+	"github.com/engineerXIII/Diploma-server/config"
 )
 
 // Logger methods interface
@@ -35,7 +37,7 @@ func NewServerLogger(cfg *config.Config) *serverLogger {
 	return &serverLogger{cfg: cfg}
 }
 
-// For mapping config.go logger to app logger levels
+// For mapping config logger to app logger levels
 var loggerLevelMap = map[string]zapcore.Level{
 	"debug":  zapcore.DebugLevel,
 	"info":   zapcore.InfoLevel,

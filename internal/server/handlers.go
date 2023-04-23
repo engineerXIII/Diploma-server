@@ -1,12 +1,30 @@
 package server
 
 import (
-	"github.com/labstack/echo/v4"
-	"github.com/labstack/echo/v4/middleware"
 	"net/http"
 	"strings"
+
+	"github.com/engineerXIII/Diploma-server/pkg/csrf"
+
+	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
+	// _ "github.com/engineerXIII/Diploma-server/docs"
+	authHttp "github.com/engineerXIII/Diploma-server/internal/auth/delivery/http"
+	authRepository "github.com/engineerXIII/Diploma-server/internal/auth/repository"
+	authUseCase "github.com/engineerXIII/Diploma-server/internal/auth/usecase"
+	commentsHttp "github.com/engineerXIII/Diploma-server/internal/comments/delivery/http"
+	commentsRepository "github.com/engineerXIII/Diploma-server/internal/comments/repository"
+	commentsUseCase "github.com/engineerXIII/Diploma-server/internal/comments/usecase"
+	apiMiddlewares "github.com/engineerXIII/Diploma-server/internal/middleware"
+	newsHttp "github.com/engineerXIII/Diploma-server/internal/news/delivery/http"
+	newsRepository "github.com/engineerXIII/Diploma-server/internal/news/repository"
+	newsUseCase "github.com/engineerXIII/Diploma-server/internal/news/usecase"
+	sessionRepository "github.com/engineerXIII/Diploma-server/internal/session/repository"
+	"github.com/engineerXIII/Diploma-server/internal/session/usecase"
+	"github.com/engineerXIII/Diploma-server/pkg/utils"
 )
 
+// Map Server Handlers
 func (s *Server) MapHandlers(e *echo.Echo) error {
 	//metrics, err := metric.CreateMetrics(s.cfg.Metrics.URL, s.cfg.Metrics.ServiceName)
 	//if err != nil {
@@ -23,12 +41,12 @@ func (s *Server) MapHandlers(e *echo.Echo) error {
 	nRepo := newsRepository.NewNewsRepository(s.db)
 	cRepo := commentsRepository.NewCommentsRepository(s.db)
 	sRepo := sessionRepository.NewSessionRepository(s.redisClient, s.cfg)
-	aAWSRepo := authRepository.NewAuthAWSRepository(s.awsClient)
+	//aAWSRepo := authRepository.NewAuthAWSRepository(s.awsClient)
 	authRedisRepo := authRepository.NewAuthRedisRepo(s.redisClient)
 	newsRedisRepo := newsRepository.NewNewsRedisRepo(s.redisClient)
 
 	// Init useCases
-	authUC := authUseCase.NewAuthUseCase(s.cfg, aRepo, authRedisRepo, aAWSRepo, s.logger)
+	authUC := authUseCase.NewAuthUseCase(s.cfg, aRepo, authRedisRepo, s.logger)
 	newsUC := newsUseCase.NewNewsUseCase(s.cfg, nRepo, newsRedisRepo, s.logger)
 	commUC := commentsUseCase.NewCommentsUseCase(s.cfg, cRepo, s.logger)
 	sessUC := usecase.NewSessionUseCase(sRepo, s.cfg)
@@ -68,7 +86,7 @@ func (s *Server) MapHandlers(e *echo.Echo) error {
 		},
 	}))
 	e.Use(middleware.Secure())
-	e.Use(middleware.BodyLimit("3M"))
+	e.Use(middleware.BodyLimit("2M"))
 	if s.cfg.Server.Debug {
 		e.Use(mw.DebugMiddleware)
 	}

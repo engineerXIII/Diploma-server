@@ -1,10 +1,13 @@
 package postgres
 
 import (
-	"database/sql"
 	"fmt"
-	"github.com/engineerXIII/Diploma-server/config"
 	"time"
+
+	_ "github.com/jackc/pgx/stdlib" // pgx driver
+	"github.com/jmoiron/sqlx"
+
+	"github.com/engineerXIII/Diploma-server/config"
 )
 
 const (
@@ -15,7 +18,7 @@ const (
 )
 
 // Return new Postgresql db instance
-func NewPsqlDB(c *config.Config) (*sql.DB, error) {
+func NewPsqlDB(c *config.Config) (*sqlx.DB, error) {
 	dataSourceName := fmt.Sprintf("host=%s port=%s user=%s dbname=%s sslmode=disable password=%s",
 		c.Postgres.PostgresqlHost,
 		c.Postgres.PostgresqlPort,
@@ -23,7 +26,8 @@ func NewPsqlDB(c *config.Config) (*sql.DB, error) {
 		c.Postgres.PostgresqlDbname,
 		c.Postgres.PostgresqlPassword,
 	)
-	db, err := sql.Open("postgres", dataSourceName)
+
+	db, err := sqlx.Connect(c.Postgres.PgDriver, dataSourceName)
 	if err != nil {
 		return nil, err
 	}

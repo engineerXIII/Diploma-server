@@ -1,7 +1,3 @@
-old-config.yaml
-
-.idea
-
 # Binaries for programs and plugins
 *.exe
 *.exe~
@@ -9,6 +5,9 @@ old-config.yaml
 *.so
 *.dylib
 
+# User defined
+docs
+config.yaml
 # Test binary, built with `go test -c`
 *.test
 
@@ -16,7 +15,20 @@ old-config.yaml
 *.out
 
 # Dependency directories (remove the comment below to include it)
-# vendor/
+ vendor/
+ media
 
-# Go workspace file
-go.work
+# Config files
+config/apple_config_files
+/config/configs.env
+/config/config_file.go
+
+# Enviroment files
+envs/
+main
+.idea
+pgdata
+vendor
+
+# Avatars storage directory
+avatars/

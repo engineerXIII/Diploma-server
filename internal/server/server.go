@@ -2,16 +2,18 @@ package server
 
 import (
 	"context"
-	"database/sql"
-	"github.com/engineerXIII/Diploma-server/config"
-	"github.com/engineerXIII/Diploma-server/pkg/logger"
-	"github.com/labstack/echo/v4"
+	"github.com/jmoiron/sqlx"
 	"net/http"
 	_ "net/http/pprof"
 	"os"
 	"os/signal"
 	"syscall"
 	"time"
+
+	"github.com/engineerXIII/Diploma-server/config"
+	"github.com/engineerXIII/Diploma-server/pkg/logger"
+	"github.com/go-redis/redis/v8"
+	"github.com/labstack/echo/v4"
 )
 
 const (
@@ -23,15 +25,20 @@ const (
 
 // Server struct
 type Server struct {
-	echo   *echo.Echo
-	cfg    *config.Config
-	db     *sql.DB
-	logger logger.Logger
+	echo        *echo.Echo
+	cfg         *config.Config
+	db          *sqlx.DB
+	redisClient *redis.Client
+	logger      logger.Logger
 }
 
 // NewServer New Server constructor
-func NewServer(cfg *config.Config, db *sql.DB, logger logger.Logger) *Server {
-	return &Server{echo: echo.New(), cfg: cfg, db: db, logger: logger}
+//
+//	func NewServer(cfg *config.Config, db *sqlx.DB, redisClient *redis.Client, awsS3Client *minio.Client, logger logger.Logger) *Server {
+//		return &Server{echo: echo.New(), cfg: cfg, db: db, redisClient: redisClient, awsClient: awsS3Client, logger: logger}
+//	}
+func NewServer(cfg *config.Config, db *sqlx.DB, redisClient *redis.Client, logger logger.Logger) *Server {
+	return &Server{echo: echo.New(), cfg: cfg, db: db, redisClient: redisClient, logger: logger}
 }
 
 func (s *Server) Run() error {
