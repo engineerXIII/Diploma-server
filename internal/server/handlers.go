@@ -19,6 +19,9 @@ import (
 	newsHttp "github.com/engineerXIII/Diploma-server/internal/news/delivery/http"
 	newsRepository "github.com/engineerXIII/Diploma-server/internal/news/repository"
 	newsUseCase "github.com/engineerXIII/Diploma-server/internal/news/usecase"
+	routersHttp "github.com/engineerXIII/Diploma-server/internal/routers/delivery/http"
+	routersRepository "github.com/engineerXIII/Diploma-server/internal/routers/repository"
+	routersUseCase "github.com/engineerXIII/Diploma-server/internal/routers/usecase"
 	sessionRepository "github.com/engineerXIII/Diploma-server/internal/session/repository"
 	"github.com/engineerXIII/Diploma-server/internal/session/usecase"
 	"github.com/engineerXIII/Diploma-server/pkg/utils"
@@ -40,6 +43,7 @@ func (s *Server) MapHandlers(e *echo.Echo) error {
 	aRepo := authRepository.NewAuthRepository(s.db)
 	nRepo := newsRepository.NewNewsRepository(s.db)
 	cRepo := commentsRepository.NewCommentsRepository(s.db)
+	rtRepo := routersRepository.NewRouterRepository(s.db)
 	sRepo := sessionRepository.NewSessionRepository(s.redisClient, s.cfg)
 	//aAWSRepo := authRepository.NewAuthAWSRepository(s.awsClient)
 	authRedisRepo := authRepository.NewAuthRedisRepo(s.redisClient)
@@ -48,12 +52,14 @@ func (s *Server) MapHandlers(e *echo.Echo) error {
 	// Init useCases
 	authUC := authUseCase.NewAuthUseCase(s.cfg, aRepo, authRedisRepo, s.logger)
 	newsUC := newsUseCase.NewNewsUseCase(s.cfg, nRepo, newsRedisRepo, s.logger)
+	rtUC := routersUseCase.NewRoutersUseCase(s.cfg, rtRepo, s.logger)
 	commUC := commentsUseCase.NewCommentsUseCase(s.cfg, cRepo, s.logger)
 	sessUC := usecase.NewSessionUseCase(sRepo, s.cfg)
 
 	// Init handlers
 	authHandlers := authHttp.NewAuthHandlers(s.cfg, authUC, sessUC, s.logger)
 	newsHandlers := newsHttp.NewNewsHandlers(s.cfg, newsUC, s.logger)
+	rtHandlers := routersHttp.NewRoutersHandlers(s.cfg, rtUC, s.logger)
 	commHandlers := commentsHttp.NewCommentsHandlers(s.cfg, commUC, s.logger)
 
 	mw := apiMiddlewares.NewMiddlewareManager(sessUC, authUC, s.cfg, []string{"*"}, s.logger)
@@ -86,7 +92,7 @@ func (s *Server) MapHandlers(e *echo.Echo) error {
 		},
 	}))
 	e.Use(middleware.Secure())
-	e.Use(middleware.BodyLimit("2M"))
+	e.Use(middleware.BodyLimit("5M"))
 	if s.cfg.Server.Debug {
 		e.Use(mw.DebugMiddleware)
 	}
@@ -96,11 +102,13 @@ func (s *Server) MapHandlers(e *echo.Echo) error {
 	health := v1.Group("/health")
 	authGroup := v1.Group("/auth")
 	newsGroup := v1.Group("/news")
+	rtGroup := v1.Group("/router")
 	commGroup := v1.Group("/comments")
 
 	authHttp.MapAuthRoutes(authGroup, authHandlers, mw)
 	newsHttp.MapNewsRoutes(newsGroup, newsHandlers, mw)
 	commentsHttp.MapCommentsRoutes(commGroup, commHandlers, mw)
+	routersHttp.MapRoutersRoutes(rtGroup, rtHandlers, mw)
 
 	health.GET("", func(c echo.Context) error {
 		s.logger.Infof("Health check RequestID: %s", utils.GetRequestID(c))

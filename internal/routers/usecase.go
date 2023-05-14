@@ -1,20 +1,17 @@
 //go:generate mockgen -source usecase.go -destination mock/usecase_mock.go -package mock
-package comments
+package routers
 
 import (
 	"context"
 
-	"github.com/google/uuid"
-
 	"github.com/engineerXIII/Diploma-server/internal/models"
-	"github.com/engineerXIII/Diploma-server/pkg/utils"
 )
 
-// Comments use case
+// Routers use case
 type UseCase interface {
-	Create(ctx context.Context, comment *models.Comment) (*models.Comment, error)
-	Update(ctx context.Context, comment *models.Comment) (*models.Comment, error)
-	Delete(ctx context.Context, commentID uuid.UUID) error
-	GetByID(ctx context.Context, commentID uuid.UUID) (*models.CommentBase, error)
-	GetAllByNewsID(ctx context.Context, newsID uuid.UUID, query *utils.PaginationQuery) (*models.CommentsList, error)
+	Create(ctx context.Context, router *models.Router) (*models.Router, error)
+	//Update(ctx context.Context, router *models.Router) (*models.Router, error)
+	//Delete(ctx context.Context, routerID uuid.UUID) error
+	GetByID(ctx context.Context, routerID int64) (*models.Router, error)
+	Status(ctx context.Context, routerID int64) (*models.HealthStatus, error)
 }
