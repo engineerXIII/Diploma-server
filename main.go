@@ -48,6 +48,7 @@ func main() {
 	err = m.Up()
 	if err != nil {
 		appLogger.Infof("Migration state: %s", err)
+		appLogger.Info("Migration completed")
 	}
 
 	redisClient := redis.NewRedisClient(cfg)
