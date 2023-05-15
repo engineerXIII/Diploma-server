@@ -41,5 +41,6 @@ func (u *routersUC) Status(ctx context.Context, routerID int64) (*models.HealthS
 	span, ctx := opentracing.StartSpanFromContext(ctx, "routersUC.Status")
 	defer span.Finish()
 
+	// Moc
 	return &models.HealthStatus{Status: "Healthy", StatusCode: "0"}, nil
 }
