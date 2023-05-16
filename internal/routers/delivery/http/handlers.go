@@ -55,6 +55,30 @@ func (h *routersHandlers) Create() echo.HandlerFunc {
 	}
 }
 
+// GetList
+// @Summary Get router list
+// @Description Get router list
+// @Tags Routers
+// @Accept  json
+// @Produce  json
+// @Success 200 {object} models.Routerlist
+// @Failure 500 {object} httpErrors.RestErr
+// @Router /router [get]
+func (h *routersHandlers) GetList() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		span, ctx := opentracing.StartSpanFromContext(utils.GetRequestCtx(c), "routersHandlers.GetByID")
+		defer span.Finish()
+
+		routerList, err := h.rtUC.GetList(ctx)
+		if err != nil {
+			utils.LogResponseError(c, h.logger, err)
+			return c.JSON(httpErrors.ErrorResponse(err))
+		}
+
+		return c.JSON(http.StatusOK, routerList)
+	}
+}
+
 // GetByID
 // @Summary Get router
 // @Description Get router by id

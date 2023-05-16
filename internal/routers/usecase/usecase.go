@@ -36,7 +36,15 @@ func (u *routersUC) GetByID(ctx context.Context, routerID int64) (*models.Router
 	return u.rtRepo.GetByID(ctx, routerID)
 }
 
-// GetByID router
+// Get router list
+func (u *routersUC) GetList(ctx context.Context) (*models.RouterList, error) {
+	span, ctx := opentracing.StartSpanFromContext(ctx, "routersUC.GetList")
+	defer span.Finish()
+
+	return u.rtRepo.GetList(ctx)
+}
+
+// Status router
 func (u *routersUC) Status(ctx context.Context, routerID int64) (*models.HealthStatus, error) {
 	span, ctx := opentracing.StartSpanFromContext(ctx, "routersUC.Status")
 	defer span.Finish()

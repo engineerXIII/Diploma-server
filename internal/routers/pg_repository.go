@@ -11,5 +11,6 @@ type Repository interface {
 	Create(ctx context.Context, router *models.Router) (*models.Router, error)
 	//Update(ctx context.Context, router *models.Router) (*models.Router, error)
 	//Delete(ctx context.Context, routerID uuid.UUID) error
+	GetList(ctx context.Context) (*models.RouterList, error)
 	GetByID(ctx context.Context, routerID int64) (*models.Router, error)
 }

@@ -52,3 +52,17 @@ func (r *routerRepo) GetByID(ctx context.Context, routerID int64) (*models.Route
 	}
 	return router, nil
 }
+
+func (r *routerRepo) GetList(ctx context.Context) (*models.RouterList, error) {
+	span, ctx := opentracing.StartSpanFromContext(ctx, "routerRepo.GetList")
+	defer span.Finish()
+
+	var list []models.Router
+	routerList := &models.RouterList{}
+	if err := r.db.Select(&list, getRouterList); err != nil {
+		return nil, errors.Wrap(err, "routerRepo.GetList.GetContext")
+	}
+	routerList.Routers = list
+	routerList.Size = len(list)
+	return routerList, nil
+}

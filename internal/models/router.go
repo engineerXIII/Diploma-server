@@ -9,10 +9,6 @@ type Router struct {
 }
 
 type RouterList struct {
-	TotalCount int       `json:"total_count"`
-	TotalPages int       `json:"total_pages"`
-	Page       int       `json:"page"`
-	Size       int       `json:"size"`
-	HasMore    bool      `json:"has_more"`
-	Routers    []*Router `json:"routers"`
+	Size    int      `json:"size"`
+	Routers []Router `json:"routers"`
 }

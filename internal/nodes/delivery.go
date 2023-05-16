@@ -1,12 +1,9 @@
-package routers
+package nodes
 
 import "github.com/labstack/echo/v4"
 
-// Routers HTTP Handlers interface
+// Nodes HTTP Handlers interface
 type Handlers interface {
-	Create() echo.HandlerFunc
-	//Update() echo.HandlerFunc
-	//Delete() echo.HandlerFunc
 	GetList() echo.HandlerFunc
 	GetByID() echo.HandlerFunc
 	Status() echo.HandlerFunc
